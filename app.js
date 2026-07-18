@@ -170,14 +170,14 @@ video.addEventListener("loadedmetadata", () => {
     function update() {
 
         const rect = wrapper.getBoundingClientRect();
+        const scrollable = wrapper.offsetHeight - window.innerHeight;
 
-        const max = wrapper.offsetHeight - window.innerHeight;
-
-        let progress = -rect.top / max;
-
+        let progress = (-rect.top) / scrollable;
         progress = Math.max(0, Math.min(progress, 1));
 
-        video.currentTime = progress * video.duration;
+        if (!isNaN(video.duration)) {
+            video.currentTime = progress * video.duration;
+        }
 
         requestAnimationFrame(update);
     }
