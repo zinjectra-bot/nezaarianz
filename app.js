@@ -166,44 +166,75 @@ const hero = document.querySelector(".hero");
 
 const frames = [];
 
-// Read every filename automatically
-document.querySelectorAll("#frame-list img").forEach(img => {
-    frames.push(img.dataset.src);
-});
+// Detect every frame automatically
+for (let i = 0; i < 100; i++) {
 
-// Preload
-frames.forEach(src => {
-    const img = new Image();
-    img.src = src;
-});
+    const num = String(i).padStart(3, "0");
 
-// First frame
-frameA.src = frames[0];
-frameB.src = frames[0];
+    const delays = [
+        "0.03",
+        "0.04"
+    ];
 
-window.addEventListener("scroll", () => {
+    for (const delay of delays) {
 
-    const rect = hero.getBoundingClientRect();
+        const src = `assets/Scroll/frame_${num}_delay-${delay}s.png`;
 
-    const progress = Math.min(
-        Math.max(-rect.top / hero.offsetHeight, 0),
-        1
-    );
+        const img = new Image();
 
-    const position = progress * (frames.length - 1);
+        img.onload = () => {
+            frames[i] = src;
+        };
 
-    const current = Math.floor(position);
-    const next = Math.min(current + 1, frames.length - 1);
+        img.src = src;
+    }
+}
 
-    const blend = position - current;
+// Wait until images are loaded
+function startAnimation() {
 
-    frameA.src = frames[current];
-    frameB.src = frames[next];
+    const validFrames = frames.filter(Boolean);
 
-    frameA.style.opacity = 1 - blend;
-    frameB.style.opacity = blend;
+    if (!validFrames.length) {
+        requestAnimationFrame(startAnimation);
+        return;
+    }
 
-});
+    frameA.src = validFrames[0];
+    frameB.src = validFrames[0];
+
+    function update() {
+
+        const rect = hero.getBoundingClientRect();
+
+        const progress = Math.min(
+            Math.max(-rect.top / hero.offsetHeight, 0),
+            1
+        );
+
+        const position = progress * (validFrames.length - 1);
+
+        const current = Math.floor(position);
+
+        const next = Math.min(
+            current + 1,
+            validFrames.length - 1
+        );
+
+        const blend = position - current;
+
+        frameA.src = validFrames[current];
+        frameB.src = validFrames[next];
+
+        frameA.style.opacity = 1 - blend;
+        frameB.style.opacity = blend;
+    }
+
+    window.addEventListener("scroll", update);
+    update();
+}
+
+startAnimation();
   /* Button ripple */
   $$('.btn').forEach(btn => {
     btn.addEventListener('click', e => {
