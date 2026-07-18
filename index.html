@@ -74,26 +74,26 @@
 
 <main>
 
-<section id="banner" class="hero">
+<section class="hero">
 
-<div id="frame-list" hidden>
-    <img data-src="assets/Scroll/frame_000_delay-0.03s.png">
-    <img data-src="assets/Scroll/frame_001_delay-0.04s.png">
-    <img data-src="assets/Scroll/frame_002_delay-0.03s.png">
-    ...
-    <img data-src="assets/Scroll/frame_099_delay-0.03s.png">
-</div>
-
-<div class="sequence-player">
-    <img class="sequence frameA">
-    <img class="sequence frameB">
-</div>
-  
-    <div class="hero-inner">
-        ...
-    </div>
+    <video
+        id="heroVideo"
+        playsinline
+        muted
+        preload="auto"
+    >
+        <source src="assets/intro.webm" type="video/webm">
+        <source src="assets/intro.mp4" type="video/mp4">
+    </video>
 
 </section>
+
+<section class="content">
+
+    <!-- Everything after the hero -->
+
+</section>
+  
 <!-- HERO -->
 <section id="home" class="hero">
   <div class="hero-inner">
