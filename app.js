@@ -184,6 +184,7 @@ video.addEventListener("loadedmetadata", () => {
     });
 
 });
+  
   /* Button ripple */
   $$('.btn').forEach(btn => {
     btn.addEventListener('click', e => {
