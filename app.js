@@ -160,26 +160,80 @@ setTimeout(closeIntro, 4500);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 
   /* 3D Scroll */
-let progress = 0;
-const max = 1;
+const video=document.getElementById("introVideo");
 
-window.addEventListener("wheel", e => {
-    if (progress < max) {
+let progress=0;
+let lastTouch=0;
+let unlocked=false;
+
+document.body.style.overflow="hidden";
+
+video.addEventListener("loadedmetadata",()=>{
+    video.pause();
+    video.currentTime=0;
+});
+
+function update(delta){
+
+    progress+=delta;
+
+    if(progress<0)progress=0;
+    if(progress>1)progress=1;
+
+    video.currentTime=progress*video.duration;
+
+    if(progress>=1){
+        unlocked=true;
+        document.body.style.overflow="";
+    }else{
+        unlocked=false;
+        document.body.style.overflow="hidden";
+    }
+}
+
+window.addEventListener("wheel",e=>{
+
+    if(!unlocked||window.scrollY===0){
+
         e.preventDefault();
 
-        progress += e.deltaY * 0.0008;
-        progress = Math.max(0, Math.min(progress, max));
+        update(e.deltaY*0.0015);
 
-        video.currentTime = progress * video.duration;
-
-        if (progress >= max) {
-            document.body.style.overflow = "";
-        } else {
-            document.body.style.overflow = "hidden";
-        }
     }
-}, { passive: false });
-  
+
+},{passive:false});
+
+window.addEventListener("touchstart",e=>{
+    lastTouch=e.touches[0].clientY;
+},{passive:false});
+
+window.addEventListener("touchmove",e=>{
+
+    if(!unlocked||window.scrollY===0){
+
+        e.preventDefault();
+
+        const y=e.touches[0].clientY;
+
+        update((lastTouch-y)*0.003);
+
+        lastTouch=y;
+
+    }
+
+},{passive:false});
+
+window.addEventListener("scroll",()=>{
+
+    if(window.scrollY===0&&progress<1){
+
+        document.body.style.overflow="hidden";
+
+        unlocked=false;
+
+    }
+
+});
   /* Button ripple */
   $$('.btn').forEach(btn => {
     btn.addEventListener('click', e => {
