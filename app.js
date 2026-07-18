@@ -160,29 +160,29 @@ setTimeout(closeIntro, 4500);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 
   /* 3D Scroll */
-const wrapper = document.querySelector(".intro-wrapper");
+gsap.registerPlugin(ScrollTrigger);
+
 const video = document.getElementById("introVideo");
 
 video.pause();
 
 video.addEventListener("loadedmetadata", () => {
 
-    function update() {
+    video.currentTime = 0;
 
-        const rect = wrapper.getBoundingClientRect();
-        const scrollable = wrapper.offsetHeight - window.innerHeight;
+    ScrollTrigger.create({
+        trigger: ".intro-animation",
+        start: "top top",
+        end: () => "+=" + (video.duration * 2500),
+        pin: true,
+        scrub: 1,
+        anticipatePin: 1,
 
-        let progress = (-rect.top) / scrollable;
-        progress = Math.max(0, Math.min(progress, 1));
-
-        if (!isNaN(video.duration)) {
-            video.currentTime = progress * video.duration;
+        onUpdate(self) {
+            video.currentTime = self.progress * video.duration;
         }
+    });
 
-        requestAnimationFrame(update);
-    }
-
-    update();
 });
   /* Button ripple */
   $$('.btn').forEach(btn => {
