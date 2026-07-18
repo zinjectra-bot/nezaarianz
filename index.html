@@ -76,13 +76,19 @@
 
 <section id="banner" class="hero">
 
-      <div class="sequence-player">
-          <img class="sequence frameA"
-               src="assets/Scroll/frame_00_delay-0.114s.png">
-      
-          <img class="sequence frameB"
-               src="assets/Scroll/frame_00_delay-0.114s.png">
-      </div>
+<div id="frame-list" hidden>
+    <img data-src="assets/Scroll/frame_000_delay-0.03s.png">
+    <img data-src="assets/Scroll/frame_001_delay-0.04s.png">
+    <img data-src="assets/Scroll/frame_002_delay-0.03s.png">
+    ...
+    <img data-src="assets/Scroll/frame_099_delay-0.03s.png">
+</div>
+
+<div class="sequence-player">
+    <img class="sequence frameA">
+    <img class="sequence frameB">
+</div>
+  
     <div class="hero-inner">
         ...
     </div>
