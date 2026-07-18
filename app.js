@@ -479,13 +479,14 @@ if (intro && video) {
 
             start: "top top",
 
-            // Less scrolling needed
-            end: () => "+=" + (window.innerHeight * 2.5),
+            // Match your CSS height (e.g. 180vh)
+            end: () => "+=" + (window.innerHeight * 1.8),
 
             pin: true,
 
-            // Smoother scrubbing
-            scrub: 0.2,
+            pinSpacing: false,
+
+            scrub: 0.1,
 
             anticipatePin: 1,
 
@@ -495,16 +496,24 @@ if (intro && video) {
 
                 if (!video.duration) return;
 
-                // 2× faster playback
-                const targetTime = Math.min(
-                    self.progress * video.duration * 2,
-                    video.duration
-                );
+                // Normal playback from 0% → 100%
+                const targetTime = self.progress * video.duration;
 
-                // Prevent unnecessary seeking
-                if (Math.abs(video.currentTime - targetTime) > 0.03) {
+                if (Math.abs(video.currentTime - targetTime) > 0.015) {
                     video.currentTime = targetTime;
                 }
+
+            },
+
+            onLeave() {
+
+                video.currentTime = video.duration;
+
+            },
+
+            onLeaveBack() {
+
+                video.currentTime = 0;
 
             }
 
@@ -520,11 +529,7 @@ if (intro && video) {
 
     } else {
 
-        video.addEventListener(
-            "loadedmetadata",
-            start,
-            { once: true }
-        );
+        video.addEventListener("loadedmetadata", start, { once: true });
 
     }
 
@@ -533,6 +538,9 @@ if (intro && video) {
 /* ---------------- Button Ripple ---------------- */
 
 $$(".btn").forEach(btn => {
+
+    btn.style.position = "relative";
+    btn.style.overflow = "hidden";
 
     btn.addEventListener("click", e => {
 
@@ -544,18 +552,21 @@ $$(".btn").forEach(btn => {
             position:absolute;
             left:${e.clientX - rect.left}px;
             top:${e.clientY - rect.top}px;
-            width:8px;
-            height:8px;
+            width:10px;
+            height:10px;
             border-radius:50%;
             background:rgba(255,255,255,.45);
-            transform:translate(-50%,-50%);
+            transform:translate(-50%,-50%) scale(0);
             pointer-events:none;
             animation:ripple .7s ease-out forwards;
+            z-index:2;
         `;
 
         btn.appendChild(ripple);
 
-        setTimeout(() => ripple.remove(), 700);
+        ripple.addEventListener("animationend", () => {
+            ripple.remove();
+        });
 
     });
 
@@ -565,9 +576,12 @@ const rippleStyle = document.createElement("style");
 
 rippleStyle.textContent = `
 @keyframes ripple{
-    to{
-        width:420px;
-        height:420px;
+    0%{
+        transform:translate(-50%,-50%) scale(0);
+        opacity:.8;
+    }
+    100%{
+        transform:translate(-50%,-50%) scale(40);
         opacity:0;
     }
 }
@@ -578,23 +592,25 @@ document.head.appendChild(rippleStyle);
 /* ---------------- Refresh ScrollTrigger ---------------- */
 
 window.addEventListener("resize", () => {
+    if (window.ScrollTrigger) ScrollTrigger.refresh();
+});
 
-    if (window.ScrollTrigger) {
+window.addEventListener("load", () => {
+    if (window.ScrollTrigger) ScrollTrigger.refresh();
+});
 
-        ScrollTrigger.refresh();
+})();
+    
+/* ---------------- Refresh ScrollTrigger ---------------- */
 
-    }
+window.addEventListener("resize", () => {
+
+    ScrollTrigger.refresh();
 
 });
 
 window.addEventListener("load", () => {
 
-    if (window.ScrollTrigger) {
-
-        ScrollTrigger.refresh();
-
-    }
+    ScrollTrigger.refresh();
 
 });
-
-})();
