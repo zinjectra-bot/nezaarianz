@@ -455,147 +455,146 @@
 
     }
 
-     /* ---------------- Video Scroll ---------------- */
+/* ---------------- Video Scroll ---------------- */
 
-    gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
-    const intro = document.querySelector(".intro-animation");
-    const video = document.getElementById("introVideo");
+const intro = document.querySelector(".intro-animation");
+const video = document.getElementById("introVideo");
 
-    if (intro && video) {
+if (intro && video) {
 
-        video.pause();
-        video.muted = true;
-        video.playsInline = true;
-        video.preload = "auto";
+    video.pause();
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = "auto";
 
-        const start = () => {
+    const start = () => {
 
-            video.currentTime = 0;
+        video.currentTime = 0;
 
-            ScrollTrigger.create({
+        ScrollTrigger.create({
 
-                trigger: intro,
+            trigger: intro,
 
-                start: "top top",
+            start: "top top",
 
-                end: () => "+=" + (window.innerHeight * 6),
+            // Less scrolling needed
+            end: () => "+=" + (window.innerHeight * 2.5),
 
-                pin: true,
+            pin: true,
 
-                scrub: 0.15,
+            // Smoother scrubbing
+            scrub: 0.2,
 
-                invalidateOnRefresh: true,
+            anticipatePin: 1,
 
-                anticipatePin: 1,
+            invalidateOnRefresh: true,
 
-                onUpdate(self) {
+            onUpdate(self) {
 
-                    if (!video.duration) return;
+                if (!video.duration) return;
 
-                    const targetTime =
-                        self.progress * video.duration;
+                // 2× faster playback
+                const targetTime = Math.min(
+                    self.progress * video.duration * 2,
+                    video.duration
+                );
 
-                    if (
-                        Math.abs(video.currentTime - targetTime) >
-                        0.02
-                    ) {
-                        video.currentTime = targetTime;
-                    }
-
+                // Prevent unnecessary seeking
+                if (Math.abs(video.currentTime - targetTime) > 0.03) {
+                    video.currentTime = targetTime;
                 }
 
-            });
-
-            ScrollTrigger.refresh();
-
-        };
-
-        if (video.readyState >= 2) {
-
-            start();
-
-        } else {
-
-            video.addEventListener(
-                "loadedmetadata",
-                start,
-                { once: true }
-            );
-
-        }
-
-    }
-
-     /* ---------------- Button Ripple ---------------- */
-
-    $$(".btn").forEach(btn => {
-
-        btn.addEventListener("click", e => {
-
-            const rect = btn.getBoundingClientRect();
-
-            const ripple = document.createElement("span");
-
-            ripple.style.cssText = `
-                position:absolute;
-                left:${e.clientX - rect.left}px;
-                top:${e.clientY - rect.top}px;
-                width:8px;
-                height:8px;
-                border-radius:50%;
-                background:rgba(255,255,255,.45);
-                transform:translate(-50%,-50%);
-                pointer-events:none;
-                animation:ripple .7s ease-out forwards;
-            `;
-
-            btn.appendChild(ripple);
-
-            setTimeout(() => {
-
-                ripple.remove();
-
-            }, 700);
+            }
 
         });
 
+        ScrollTrigger.refresh();
+
+    };
+
+    if (video.readyState >= 2) {
+
+        start();
+
+    } else {
+
+        video.addEventListener(
+            "loadedmetadata",
+            start,
+            { once: true }
+        );
+
+    }
+
+}
+
+/* ---------------- Button Ripple ---------------- */
+
+$$(".btn").forEach(btn => {
+
+    btn.addEventListener("click", e => {
+
+        const rect = btn.getBoundingClientRect();
+
+        const ripple = document.createElement("span");
+
+        ripple.style.cssText = `
+            position:absolute;
+            left:${e.clientX - rect.left}px;
+            top:${e.clientY - rect.top}px;
+            width:8px;
+            height:8px;
+            border-radius:50%;
+            background:rgba(255,255,255,.45);
+            transform:translate(-50%,-50%);
+            pointer-events:none;
+            animation:ripple .7s ease-out forwards;
+        `;
+
+        btn.appendChild(ripple);
+
+        setTimeout(() => ripple.remove(), 700);
+
     });
 
-    const rippleStyle = document.createElement("style");
+});
 
-    rippleStyle.textContent = `
-        @keyframes ripple{
-            to{
-                width:420px;
-                height:420px;
-                opacity:0;
-            }
-        }
-    `;
+const rippleStyle = document.createElement("style");
 
-    document.head.appendChild(rippleStyle);
+rippleStyle.textContent = `
+@keyframes ripple{
+    to{
+        width:420px;
+        height:420px;
+        opacity:0;
+    }
+}
+`;
 
-    /* ---------------- Refresh ScrollTrigger ---------------- */
+document.head.appendChild(rippleStyle);
 
-    window.addEventListener("resize", () => {
+/* ---------------- Refresh ScrollTrigger ---------------- */
 
-        if (window.ScrollTrigger) {
+window.addEventListener("resize", () => {
 
-            ScrollTrigger.refresh();
+    if (window.ScrollTrigger) {
 
-        }
+        ScrollTrigger.refresh();
 
-    });
+    }
 
-    window.addEventListener("load", () => {
+});
 
-        if (window.ScrollTrigger) {
+window.addEventListener("load", () => {
 
-            ScrollTrigger.refresh();
+    if (window.ScrollTrigger) {
 
-        }
+        ScrollTrigger.refresh();
 
-    });
+    }
+
+});
 
 })();
