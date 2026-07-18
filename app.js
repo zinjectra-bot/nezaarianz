@@ -160,49 +160,50 @@ setTimeout(closeIntro, 4500);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 
   /* 3D Scroll */
-
 const frameA = document.querySelector(".frameA");
 const frameB = document.querySelector(".frameB");
+const hero = document.querySelector(".hero");
 
 const frames = [];
 
-for(let i=0;i<39;i++){
-    frames.push(
-        `assets/Scroll/frame_${String(i).padStart(2,"0")}_delay-0.114s.png`
-    );
-}
-
-// preload
-frames.forEach(src=>{
-    const img=new Image();
-    img.src=src;
+// Read every filename automatically
+document.querySelectorAll("#frame-list img").forEach(img => {
+    frames.push(img.dataset.src);
 });
 
-const hero=document.querySelector(".hero");
+// Preload
+frames.forEach(src => {
+    const img = new Image();
+    img.src = src;
+});
 
-window.addEventListener("scroll",()=>{
+// First frame
+frameA.src = frames[0];
+frameB.src = frames[0];
 
-    const rect=hero.getBoundingClientRect();
+window.addEventListener("scroll", () => {
 
-    const progress=Math.min(
-        Math.max(-rect.top/hero.offsetHeight,0),
+    const rect = hero.getBoundingClientRect();
+
+    const progress = Math.min(
+        Math.max(-rect.top / hero.offsetHeight, 0),
         1
     );
 
-    const position=progress*(frames.length-1);
+    const position = progress * (frames.length - 1);
 
-    const current=Math.floor(position);
-    const next=Math.min(current+1,frames.length-1);
+    const current = Math.floor(position);
+    const next = Math.min(current + 1, frames.length - 1);
 
-    const blend=position-current;
+    const blend = position - current;
 
-    frameA.src=frames[current];
-    frameB.src=frames[next];
+    frameA.src = frames[current];
+    frameB.src = frames[next];
 
-    frameA.style.opacity=1-blend;
-    frameB.style.opacity=blend;
+    frameA.style.opacity = 1 - blend;
+    frameB.style.opacity = blend;
+
 });
-
   /* Button ripple */
   $$('.btn').forEach(btn => {
     btn.addEventListener('click', e => {
