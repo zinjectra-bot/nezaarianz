@@ -160,79 +160,29 @@ setTimeout(closeIntro, 4500);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 
   /* 3D Scroll */
-const video=document.getElementById("introVideo");
+const wrapper = document.querySelector(".intro-wrapper");
+const video = document.getElementById("introVideo");
 
-let progress=0;
-let lastTouch=0;
-let unlocked=false;
+video.pause();
 
-document.body.style.overflow="hidden";
+video.addEventListener("loadedmetadata", () => {
 
-video.addEventListener("loadedmetadata",()=>{
-    video.pause();
-    video.currentTime=0;
-});
+    function update() {
 
-function update(delta){
+        const rect = wrapper.getBoundingClientRect();
 
-    progress+=delta;
+        const max = wrapper.offsetHeight - window.innerHeight;
 
-    if(progress<0)progress=0;
-    if(progress>1)progress=1;
+        let progress = -rect.top / max;
 
-    video.currentTime=progress*video.duration;
+        progress = Math.max(0, Math.min(progress, 1));
 
-    if(progress>=1){
-        unlocked=true;
-        document.body.style.overflow="";
-    }else{
-        unlocked=false;
-        document.body.style.overflow="hidden";
-    }
-}
+        video.currentTime = progress * video.duration;
 
-window.addEventListener("wheel",e=>{
-
-    if(!unlocked||window.scrollY===0){
-
-        e.preventDefault();
-
-        update(e.deltaY*0.0015);
-
+        requestAnimationFrame(update);
     }
 
-},{passive:false});
-
-window.addEventListener("touchstart",e=>{
-    lastTouch=e.touches[0].clientY;
-},{passive:false});
-
-window.addEventListener("touchmove",e=>{
-
-    if(!unlocked||window.scrollY===0){
-
-        e.preventDefault();
-
-        const y=e.touches[0].clientY;
-
-        update((lastTouch-y)*0.003);
-
-        lastTouch=y;
-
-    }
-
-},{passive:false});
-
-window.addEventListener("scroll",()=>{
-
-    if(window.scrollY===0&&progress<1){
-
-        document.body.style.overflow="hidden";
-
-        unlocked=false;
-
-    }
-
+    update();
 });
   /* Button ripple */
   $$('.btn').forEach(btn => {
