@@ -160,46 +160,26 @@ setTimeout(closeIntro, 4500);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
 
   /* 3D Scroll */
-const TOTAL_FRAMES = 100;
-let frame = 0;
-let locked = true;
+let progress = 0;
+const max = 1;
 
-const hero = document.querySelector(".hero");
-const frameA = document.querySelector(".frameA");
+window.addEventListener("wheel", e => {
+    if (progress < max) {
+        e.preventDefault();
 
-function showFrame(i){
-    frameA.src=`assets/Scroll/frame_${String(i).padStart(3,"0")}_delay-${i%2===0?"0.03":"0.04"}s.png`;
-}
+        progress += e.deltaY * 0.0008;
+        progress = Math.max(0, Math.min(progress, max));
 
-showFrame(0);
+        video.currentTime = progress * video.duration;
 
-window.addEventListener("wheel",(e)=>{
-
-    if(!locked) return;
-
-    e.preventDefault();
-
-    if(e.deltaY>0){
-        frame++;
-    }else{
-        frame--;
+        if (progress >= max) {
+            document.body.style.overflow = "";
+        } else {
+            document.body.style.overflow = "hidden";
+        }
     }
-
-    frame=Math.max(0,Math.min(frame,TOTAL_FRAMES-1));
-
-    showFrame(frame);
-
-    if(frame===TOTAL_FRAMES-1){
-
-        locked=false;
-
-        hero.style.position="relative";
-
-    }
-
-},{passive:false});
+}, { passive: false });
   
-startAnimation();
   /* Button ripple */
   $$('.btn').forEach(btn => {
     btn.addEventListener('click', e => {
