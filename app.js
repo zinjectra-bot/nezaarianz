@@ -530,7 +530,7 @@ if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
 
                 start: "top top",
 
-                end: () => "+=" + window.innerHeight * 2,
+                end: () => "+=" + window.innerHeight,
 
                 pin: true,
 
