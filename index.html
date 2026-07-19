@@ -70,15 +70,22 @@
   </nav>
 </header>
 
-<!-- 3d scroll -->
-<section class="intro-animation">
-    <video id="introVideo" muted playsinline preload="auto">
-        <source src="assets/intro.mp4" type="video/mp4">
-    </video>
-</section>
-  
 <!-- HERO -->
 <section id="home" class="hero">
+    <video
+        class="hero-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+        preload="auto"
+    >
+        <source src="assets/intro.mp4" type="video/mp4">
+    </video>
+
+    <div class="hero-overlay"></div>
+
   <div class="hero-inner">
     <div class="hero-copy reveal">
       <div class="badge glass-sm">
