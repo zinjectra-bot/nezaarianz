@@ -515,7 +515,6 @@ body.light .shine{background:linear-gradient(90deg,var(--ink),var(--violet-1),va
 }
 
 /* Background Image */
-
 .hero-img{
     position:absolute;
     inset:0;
@@ -525,23 +524,16 @@ body.light .shine{background:linear-gradient(90deg,var(--ink),var(--violet-1),va
 
     object-fit:cover;
 
-    opacity:.75;
-
-    transform:scale(1.06);
-
-    filter:
-        saturate(1.4)
-        contrast(1.05)
-        brightness(.85);
+    opacity:0.35; /* Adjust: 0.2 - 1.0 */
 
     transition:
-        transform .9s var(--ease),
-        opacity .4s;
+        transform .8s var(--ease),
+        opacity .3s;
 }
 
 .browser-mock:hover .hero-img{
-    transform:scale(1.12);
-    opacity:.55;
+    transform:scale(1.05);
+    opacity:0.45;
 }
 
 /* Glass Layer */
