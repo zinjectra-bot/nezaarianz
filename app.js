@@ -590,15 +590,6 @@ ScrollTrigger.config({
 
 });
 
-
-onLeaveBack() {
-
-    target = 0;
-
-    video.currentTime = 0;
-
-}
-    
 /* ---------------- Button Ripple ---------------- */
 
 $$(".btn").forEach(btn => {
