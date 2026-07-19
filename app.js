@@ -460,8 +460,6 @@
 gsap.registerPlugin(ScrollTrigger);
 
 const intro = document.querySelector(".intro-animation");
-const video = document.getElementById("introVideo");
-
 if (intro && video) {
 
     video.pause();
