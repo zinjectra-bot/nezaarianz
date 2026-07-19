@@ -455,141 +455,7 @@ if (heroVisual) {
     });
 
 }
-
- /* ==========================================================
-   Apple Video Scroll Engine
-========================================================== */
-
-if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    ScrollTrigger.config({
-        ignoreMobileResize: true,
-        autoRefreshEvents: "DOMContentLoaded,load"
-    });
-
-    ScrollTrigger.getAll().forEach(st => {
-        if (st.vars.trigger?.classList?.contains("intro-animation")) {
-            st.kill();
-        }
-    });
-
-    const intro = $(".intro-animation");
-    const video = $("#introVideo");
-
-    if (intro && video) {
-
-        video.pause();
-        video.muted = true;
-        video.playsInline = true;
-        video.preload = "auto";
-
-        video.setAttribute("playsinline", "");
-        video.setAttribute("webkit-playsinline", "");
-
-        let target = 0;
-        let current = 0;
-        let raf = null;
-
-        function animate() {
-
-            current += (target - current) * 0.13;
-
-            if (Math.abs(current - target) < 0.0001) {
-                current = target;
-            }
-
-            if (video.duration) {
-
-                const time = current * video.duration;
-
-                if (Math.abs(video.currentTime - time) > 0.01) {
-                    video.currentTime = time;
-                }
-
-            }
-
-            raf = requestAnimationFrame(animate);
-
-        }
-
-        function initVideo() {
-
-            video.currentTime = 0;
-
-            if (!raf) {
-
-                raf = requestAnimationFrame(animate);
-
-            }
-
-            ScrollTrigger.create({
-
-                trigger: intro,
-
-                start: "top top",
-
-                end: () => "+=" + window.innerHeight*1.1,
-
-                pin: true,
-
-                pinSpacing: false,
-
-                scrub: 0.15,
-
-                anticipatePin: 1,
-
-                invalidateOnRefresh: true,
-
-                fastScrollEnd: true,
-
-                onUpdate(self) {
-
-                    target = self.progress;
-
-                },
-
-                onLeave() {
-
-                    target = 1;
-
-                },
-
-                onLeaveBack() {
-
-                    target = 0;
-
-                }
-
-            });
-
-            ScrollTrigger.refresh();
-
-        }
-
-        if (video.readyState >= 2) {
-
-            initVideo();
-
-        } else {
-
-            video.addEventListener(
-                "loadedmetadata",
-                initVideo,
-                { once: true }
-            );
-
-        }
-
-    }
-
-}
-
-/* ==========================================================
-   Button Ripple
-========================================================== */
-
+   
 $$(".btn").forEach(btn => {
 
     btn.style.position = "relative";
@@ -779,7 +645,7 @@ window.addEventListener("beforeunload", () => {
 });
 
 /* ==========================================================
-   Finished
+   Finished, Coded By Zinjectra/Ad1th
 ========================================================== */
 
 })();
