@@ -239,19 +239,21 @@ body.light .eyebrow{color:#4a2ecc}
 
 /* ---------- Hero ---------- */
 .hero{
-    position:relative;
-    min-height:100vh;
-    padding:180px 24px 100px;
-    margin:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    background:transparent;
-    z-index:2;
-    transform:translateZ(0);
-    backface-visibility:hidden;
-    will-change:transform;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+
+    margin: 0;
+    padding: 90px 24px 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+    background: transparent;
+
+    z-index: 2;
 }
 .hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.05fr 1fr;gap:60px;align-items:center}
 .badge{display:inline-flex;align-items:center;gap:8px;color:var(--ink)}
@@ -280,11 +282,13 @@ body.light .shine{background:linear-gradient(90deg,var(--ink),var(--violet-1),va
 
 /* _____________3D Scroll__________________ */
 .intro-animation{
-    position:relative;
-    width:100%;
-    height:180vh;
-    overflow:hidden;
-    background:#000;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
 }
 
 .intro-animation video{
