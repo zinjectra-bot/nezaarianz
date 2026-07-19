@@ -458,7 +458,10 @@
 /* ---------------- Video Scroll ---------------- */
 
 gsap.registerPlugin(ScrollTrigger);
-
+ScrollTrigger.config({
+    ignoreMobileResize: true
+});
+    
 const intro = document.querySelector(".intro-animation");
 const video = document.getElementById("introVideo");
 
