@@ -455,6 +455,24 @@ if (heroVisual) {
     });
 
 }
+
+const heroVideo = document.querySelector(".hero-video");
+
+if (heroVideo) {
+
+    heroVideo.muted = true;
+    heroVideo.loop = true;
+    heroVideo.playsInline = true;
+
+    heroVideo.play().catch(() => {
+
+        document.addEventListener("click", () => {
+            heroVideo.play();
+        }, { once: true });
+
+    });
+
+}
    
 $$(".btn").forEach(btn => {
 
