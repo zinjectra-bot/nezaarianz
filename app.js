@@ -590,6 +590,7 @@ ScrollTrigger.config({
 
 });
 
+const intro = document.querySelector(".intro-animation");
 /* ---------------- Button Ripple ---------------- */
 
 $$(".btn").forEach(btn => {
