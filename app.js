@@ -464,11 +464,15 @@ const video = document.getElementById("introVideo");
 
 if (intro && video) {
 
+const video = document.getElementById("introVideo");
+
+    video.pause();
+    video.autoplay = false;
+    video.loop = false;
+    video.controls = false;
     video.muted = true;
     video.playsInline = true;
-    video.preload = "auto";
-    video.pause();
-
+    
     let targetTime = 0;
 
     function animate() {
