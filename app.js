@@ -458,10 +458,7 @@
 /* ---------------- Video Scroll ---------------- */
 
 gsap.registerPlugin(ScrollTrigger);
-ScrollTrigger.config({
-    ignoreMobileResize: true
-});
-    
+
 const intro = document.querySelector(".intro-animation");
 const video = document.getElementById("introVideo");
 
@@ -472,9 +469,23 @@ if (intro && video) {
     video.preload = "auto";
     video.pause();
 
-    function initVideoScroll() {
+    let targetTime = 0;
 
-        video.currentTime = 0;
+    function animate() {
+
+        if (video.duration) {
+
+            video.currentTime += (targetTime - video.currentTime) * 0.22;
+
+        }
+
+        requestAnimationFrame(animate);
+
+    }
+
+    function init() {
+
+        animate();
 
         ScrollTrigger.create({
 
@@ -482,13 +493,13 @@ if (intro && video) {
 
             start: "top top",
 
-            end: "+=3000",
+            end: "+=2500",
 
             pin: true,
 
             pinSpacing: true,
 
-            scrub: 0.15,
+            scrub: 0.4,
 
             anticipatePin: 1,
 
@@ -498,16 +509,7 @@ if (intro && video) {
 
             onUpdate(self) {
 
-                if (!video.duration) return;
-
-                const target =
-                    self.progress * video.duration;
-
-                if (Math.abs(video.currentTime - target) > 0.01) {
-
-                    video.currentTime = target;
-
-                }
+                targetTime = self.progress * video.duration;
 
             }
 
@@ -519,31 +521,15 @@ if (intro && video) {
 
     if (video.readyState >= 2) {
 
-        initVideoScroll();
+        init();
 
     } else {
 
-        video.addEventListener("loadedmetadata", initVideoScroll, {
-            once: true
-        });
+        video.addEventListener("loadedmetadata", init, { once: true });
 
     }
 
 }
-
-/* Refresh */
-
-window.addEventListener("resize", () => {
-
-    ScrollTrigger.refresh();
-
-});
-
-window.addEventListener("load", () => {
-
-    ScrollTrigger.refresh();
-
-});
 /* ---------------- Button Ripple ---------------- */
 
 $$(".btn").forEach(btn => {
