@@ -237,16 +237,13 @@ body.light .eyebrow{color:#4a2ecc}
 .section-head h2{font-size:clamp(30px,4vw,52px);line-height:1.05;margin-bottom:14px}
 .section-head p{color:var(--muted);font-size:17px;line-height:1.6}
 
-/* ---------- Hero ---------- */
-```css
-/* ---------- Hero ---------- */
+/* ---------- Hero ------ */
 
 .hero{
     position:relative;
     width:100%;
     min-height:100vh;
 
-    margin:0;
     padding:90px 24px 40px;
 
     display:flex;
@@ -255,119 +252,6 @@ body.light .eyebrow{color:#4a2ecc}
 
     overflow:hidden;
     isolation:isolate;
-}
-
-
-/* Infinite Background Video */
-.hero-bg-video{
-    position:absolute;
-    inset:0;
-
-    width:100%;
-    height:100%;
-
-    object-fit:cover;
-
-    z-index:-3;
-
-    pointer-events:none;
-    user-select:none;
-
-    transform:scale(1.05) translateZ(0);
-    backface-visibility:hidden;
-}
-
-
-/* Video dark glass layer */
-.hero::before{
-    content:"";
-    position:absolute;
-    inset:0;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(5,7,15,.35),
-            rgba(5,7,15,.75)
-        );
-
-    z-index:-2;
-}
-
-
-/* Aurora glow above video */
-.hero::after{
-    content:"";
-    position:absolute;
-    inset:-30%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(124,92,255,.18),
-            transparent 55%
-        );
-
-    filter:blur(80px);
-    z-index:-1;
-
-    pointer-events:none;
-}
-
-
-.hero-inner{
-    position:relative;
-    z-index:2;
-
-    max-width:1200px;
-    width:100%;
-    margin:0 auto;
-
-    display:grid;
-    grid-template-columns:1.05fr 1fr;
-    gap:60px;
-
-    align-items:center;
-}
-
-
-/* keep hero cards above video */
-.hero-visual{
-    position:relative;
-    z-index:3;
-}
-
-
-/* Mobile */
-@media(max-width:960px){
-
-    .hero{
-        padding:140px 20px 80px;
-    }
-
-   .hero{
-    position:relative;
-    width:100%;
-    min-height:100vh;
-
-    margin:0;
-    padding:90px 24px 40px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    overflow:hidden;
-    isolation:isolate;
-}
-   @media(max-width:768px){
-
-    .hero-bg-video{
-        width:auto;
-        height:100%;
-        min-width:100%;
-    }
-
 }
 
 
@@ -381,12 +265,9 @@ body.light .eyebrow{color:#4a2ecc}
     width:100%;
     height:100%;
 
-    min-width:100%;
-    min-height:100%;
-
     object-fit:cover;
 
-    transform:translate(-50%, -50%);
+    transform:translate(-50%, -50%) scale(1.05);
 
     z-index:0;
 
@@ -395,43 +276,86 @@ body.light .eyebrow{color:#4a2ecc}
 }
 
 
-/* Dark overlay above video */
+/* Dark overlay */
 .hero::before{
     content:"";
+
     position:absolute;
     inset:0;
 
-    background:linear-gradient(
-        180deg,
-        rgba(5,7,15,.35),
-        rgba(5,7,15,.75)
-    );
+    background:
+        linear-gradient(
+            180deg,
+            rgba(5,7,15,.35),
+            rgba(5,7,15,.8)
+        );
 
     z-index:1;
 }
 
 
-/* Content above everything */
+/* Hero content */
 .hero-inner{
     position:relative;
 
-    z-index:2;
-
-    max-width:1200px;
     width:100%;
-    margin:0 auto;
+    max-width:1200px;
+
+    z-index:2;
 
     display:grid;
     grid-template-columns:1.05fr 1fr;
+
     gap:60px;
 
     align-items:center;
 }
 
+
+/* Floating visual */
+.hero-visual{
+    position:relative;
+    z-index:3;
 }
 
 
-.hero-inner{position:relative;z-index:2;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.05fr 1fr;gap:60px;align-items:center}
+/* Mobile */
+@media(max-width:960px){
+
+    .hero{
+        padding:140px 20px 80px;
+    }
+
+
+    .hero-inner{
+        grid-template-columns:1fr;
+        gap:80px;
+
+        text-align:center;
+    }
+
+
+    .hero-sub{
+        margin-left:auto;
+        margin-right:auto;
+    }
+
+
+    .hero-cta,
+    .hero-stats{
+        justify-content:center;
+    }
+
+
+    .batch-logo-float{
+        width:80px;
+        height:80px;
+        right:-10px;
+        bottom:-30px;
+    }
+
+}
+
 .badge{display:inline-flex;align-items:center;gap:8px;color:var(--ink)}
 .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--blue-1);box-shadow:0 0 10px var(--blue-1);animation:pulseDot 2s ease-in-out infinite}
 @keyframes pulseDot{50%{transform:scale(1.4);opacity:.6}}
