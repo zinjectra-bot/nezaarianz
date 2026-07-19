@@ -455,7 +455,7 @@
 
     }
 
-/* ---------------- Video Scroll ---------------- */
+/* ---------------- Apple Video Scroll Engine ---------------- */
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -464,32 +464,49 @@ const video = document.getElementById("introVideo");
 
 if (intro && video) {
 
-const video = document.getElementById("introVideo");
-
     video.pause();
     video.autoplay = false;
     video.loop = false;
     video.controls = false;
     video.muted = true;
     video.playsInline = true;
+    video.preload = "auto";
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
     
-    let targetTime = 0;
 
-    function animate() {
+    let target = 0;
+    let current = 0;
+    let raf = null;
+
+    function render() {
+
+        current += (target - current) * 0.12;
+
+        if (Math.abs(current - target) < 0.001) {
+            current = target;
+        }
 
         if (video.duration) {
 
-            video.currentTime += (targetTime - video.currentTime) * 0.22;
+            const t = current * video.duration;
+
+            if (Math.abs(video.currentTime - t) > 0.01) {
+                video.currentTime = t;
+            }
 
         }
 
-        requestAnimationFrame(animate);
+        raf = requestAnimationFrame(render);
+        
 
     }
 
     function init() {
 
-        animate();
+        video.currentTime = 0;
+
+        if (!raf) render();
 
         ScrollTrigger.create({
 
@@ -497,23 +514,23 @@ const video = document.getElementById("introVideo");
 
             start: "top top",
 
-            end: "+=2500",
+            end: () => "+=" + window.innerHeight * 2,
 
             pin: true,
 
-            pinSpacing: true,
+            pinSpacing: false,
 
-            scrub: 0.4,
-
-            anticipatePin: 1,
+            scrub: 0.08,
 
             invalidateOnRefresh: true,
+
+            anticipatePin: 1,
 
             fastScrollEnd: true,
 
             onUpdate(self) {
 
-                targetTime = self.progress * video.duration;
+                target = self.progress;
 
             }
 
@@ -529,11 +546,106 @@ const video = document.getElementById("introVideo");
 
     } else {
 
-        video.addEventListener("loadedmetadata", init, { once: true });
+        video.addEventListener("loadedmetadata", init, {
+            once: true
+        });
 
     }
 
 }
+
+    ScrollTrigger.create({
+
+    trigger: intro,
+
+    start: "top top",
+
+    end: () => "+=" + (window.innerHeight * 1.38),
+
+    pin: true,
+
+    pinSpacing: true,
+
+    scrub: 0.15,
+
+    anticipatePin: 1,
+
+    invalidateOnRefresh: true,
+
+    fastScrollEnd: true,
+
+    preventOverlaps: true,
+
+    onUpdate(self) {
+
+        target = self.progress;
+
+    },
+
+    onLeave() {
+
+        target = 1;
+
+    },
+
+    onLeaveBack() {
+
+        target = 0;
+
+    }
+
+});
+
+function render() {
+
+    current += (target - current) * 0.28;
+
+    if (Math.abs(current - target) < 0.0005) {
+
+        current = target;
+
+    }
+
+    if (video.duration) {
+
+        const time = current * video.duration;
+
+        if (Math.abs(video.currentTime - time) > 0.02) {
+
+            video.currentTime = time;
+
+        }
+
+    }
+
+    raf = requestAnimationFrame(render);
+
+}
+    
+ScrollTrigger.config({
+
+    ignoreMobileResize: true,
+
+    autoRefreshEvents: "DOMContentLoaded,load"
+
+});
+
+onLeave() {
+
+    target = 1;
+
+    video.currentTime = video.duration;
+
+},
+
+onLeaveBack() {
+
+    target = 0;
+
+    video.currentTime = 0;
+
+}
+    
 /* ---------------- Button Ripple ---------------- */
 
 $$(".btn").forEach(btn => {
