@@ -464,12 +464,12 @@ const video = document.getElementById("introVideo");
 
 if (intro && video) {
 
-    video.pause();
     video.muted = true;
     video.playsInline = true;
     video.preload = "auto";
+    video.pause();
 
-    const start = () => {
+    function initVideoScroll() {
 
         video.currentTime = 0;
 
@@ -479,41 +479,32 @@ if (intro && video) {
 
             start: "top top",
 
-            // Match your CSS height (e.g. 180vh)
-            end: () => "+=" + (window.innerHeight * 1.8),
+            end: "+=3000",
 
             pin: true,
 
-            pinSpacing: false,
+            pinSpacing: true,
 
-            scrub: 0.1,
+            scrub: 0.15,
 
             anticipatePin: 1,
 
             invalidateOnRefresh: true,
 
+            fastScrollEnd: true,
+
             onUpdate(self) {
 
                 if (!video.duration) return;
 
-                // Normal playback from 0% → 100%
-                const targetTime = self.progress * video.duration;
+                const target =
+                    self.progress * video.duration;
 
-                if (Math.abs(video.currentTime - targetTime) > 0.015) {
-                    video.currentTime = targetTime;
+                if (Math.abs(video.currentTime - target) > 0.01) {
+
+                    video.currentTime = target;
+
                 }
-
-            },
-
-            onLeave() {
-
-                video.currentTime = video.duration;
-
-            },
-
-            onLeaveBack() {
-
-                video.currentTime = 0;
 
             }
 
@@ -521,20 +512,35 @@ if (intro && video) {
 
         ScrollTrigger.refresh();
 
-    };
+    }
 
     if (video.readyState >= 2) {
 
-        start();
+        initVideoScroll();
 
     } else {
 
-        video.addEventListener("loadedmetadata", start, { once: true });
+        video.addEventListener("loadedmetadata", initVideoScroll, {
+            once: true
+        });
 
     }
 
 }
 
+/* Refresh */
+
+window.addEventListener("resize", () => {
+
+    ScrollTrigger.refresh();
+
+});
+
+window.addEventListener("load", () => {
+
+    ScrollTrigger.refresh();
+
+});
 /* ---------------- Button Ripple ---------------- */
 
 $$(".btn").forEach(btn => {
