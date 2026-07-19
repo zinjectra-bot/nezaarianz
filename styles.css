@@ -255,7 +255,6 @@ body.light .eyebrow{color:#4a2ecc}
     padding:120px 24px 80px;
 
     overflow:hidden;
-    isolation:isolate;
 }
 
 .hero::before{
