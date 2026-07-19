@@ -264,28 +264,21 @@ body.light .shine{background:linear-gradient(90deg,var(--ink),var(--violet-1),va
 .hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:44px}
 
 /* _____________3D Scroll__________________ */
-
 .intro-animation{
     position:relative;
     width:100%;
-    height:250vh; /* Change to 180vh–300vh depending on how long you want the intro */
-    overflow:hidden;
-    background:#000;
+    height:100vh;
 }
 
 .intro-animation video{
     position:sticky;
     top:0;
-    left:0;
-    display:block;
     width:100%;
     height:100vh;
     object-fit:cover;
-    object-position:center;
+    display:block;
     pointer-events:none;
-    z-index:1;
 }
-
 /*_________________________________________*/
 
 .btn{
