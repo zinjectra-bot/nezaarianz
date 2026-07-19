@@ -590,13 +590,6 @@ ScrollTrigger.config({
 
 });
 
-onLeave() {
-
-    target = 1;
-
-    video.currentTime = video.duration;
-
-},
 
 onLeaveBack() {
 
