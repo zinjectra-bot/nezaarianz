@@ -237,136 +237,101 @@ body.light .eyebrow{color:#4a2ecc}
 .section-head h2{font-size:clamp(30px,4vw,52px);line-height:1.05;margin-bottom:14px}
 .section-head p{color:var(--muted);font-size:17px;line-height:1.6}
 
-/* ---------- Hero ------ */
+/* ---------- Hero ---------- */
+/* ===========================
+   HERO
+   =========================== */
 
 .hero{
     position:relative;
+
     width:100%;
     min-height:100vh;
-
-    padding:90px 24px 40px;
 
     display:flex;
     align-items:center;
     justify-content:center;
 
+    padding:120px 24px 80px;
+
     overflow:hidden;
     isolation:isolate;
-    z-index: 1;
 }
 
-/* Background Video */
-.hero-bg-video{
-    position:fixed;
-
-    top:0;
-    left:0;
-
-    width:100vw;
-    height:100vh;
-
-    object-fit:cover;
-
-    z-index:-10;
-
-    pointer-events:none;
-    user-select:none;
-
-    transform:scale(1.08);
-
-    opacity:1;
-
-    transition:opacity .6s ease;
-}
-
-/* Keep hero above video */
-.hero{
-    position:relative;
-    isolation:isolate;
-    z-index:1;
-}
-
-
-/* Dark overlay */
 .hero::before{
     content:"";
-
     position:absolute;
     inset:0;
 
     background:
         linear-gradient(
-            180deg,
-            rgba(5,7,15,.35),
-            rgba(5,7,15,.8)
+            to bottom,
+            rgba(0,0,0,.30),
+            rgba(0,0,0,.55)
         );
 
     z-index:1;
 }
 
-
-/* Hero content */
 .hero-inner{
     position:relative;
 
-    width:100%;
-    max-width:1200px;
-
-    z-index:2;
+    width:min(1200px,100%);
+    margin:0 auto;
 
     display:grid;
     grid-template-columns:1.05fr 1fr;
-
-    gap:60px;
-
     align-items:center;
+
+    gap:64px;
+
+    z-index:2;
 }
 
-
-/* Floating visual */
+.hero-content,
 .hero-visual{
     position:relative;
-    z-index:3;
+    z-index:2;
 }
 
+/* Background video */
+.hero-bg-video{
+    position:fixed;
+    inset:0;
+
+    width:100vw;
+    height:100vh;
+
+    object-fit:cover;
+    object-position:center;
+
+    pointer-events:none;
+
+    z-index:-1;
+}
 
 /* Mobile */
-@media(max-width:960px){
+@media (max-width:960px){
 
     .hero{
         padding:140px 20px 80px;
     }
 
-
     .hero-inner{
         grid-template-columns:1fr;
-        gap:80px;
-
         text-align:center;
+        gap:80px;
     }
-
 
     .hero-sub{
-        margin-left:auto;
-        margin-right:auto;
+        margin-inline:auto;
     }
-
 
     .hero-cta,
     .hero-stats{
         justify-content:center;
     }
-
-
-    .batch-logo-float{
-        width:80px;
-        height:80px;
-        right:-10px;
-        bottom:-30px;
-    }
-
 }
-
 .badge{display:inline-flex;align-items:center;gap:8px;color:var(--ink)}
 .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--blue-1);box-shadow:0 0 10px var(--blue-1);animation:pulseDot 2s ease-in-out infinite}
 @keyframes pulseDot{50%{transform:scale(1.4);opacity:.6}}
