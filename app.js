@@ -310,3 +310,476 @@ translateY(-4px)
     });
 
 });
+   
+/* ---------------- Reveal ---------------- */
+
+const revealObserver = new IntersectionObserver(
+    entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("in");
+            revealObserver.unobserve(entry.target);
+        });
+    },
+    {
+        threshold: 0.12,
+        rootMargin: "0px 0px -40px 0px"
+    }
+);
+
+$$(".reveal").forEach(el => revealObserver.observe(el));
+
+/* ---------------- Active Nav ---------------- */
+
+const sections = [
+    "home",
+    "about",
+    "memories",
+    "gallery",
+    "legacy",
+    "socials",
+    "footer"
+]
+.map(id => document.getElementById(id))
+.filter(Boolean);
+
+const navItems = $$(".nav-link");
+
+const spy = new IntersectionObserver(
+    entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+
+            navItems.forEach(link => {
+                link.classList.toggle(
+                    "active",
+                    link.getAttribute("href") === "#" + entry.target.id
+                );
+            });
+        });
+    },
+    {
+        threshold: 0.45
+    }
+);
+
+sections.forEach(section => spy.observe(section));
+
+/* ---------------- Counters ---------------- */
+
+const counterObserver = new IntersectionObserver(
+    entries => {
+        entries.forEach(entry => {
+
+            if (!entry.isIntersecting) return;
+
+            const el = entry.target;
+            const target = Number(el.dataset.count);
+            const startTime = performance.now();
+            const duration = 1600;
+
+            function update(now) {
+
+                const progress = Math.min((now - startTime) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+
+                el.textContent = Math.floor(target * eased).toLocaleString();
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    el.textContent = target.toLocaleString();
+                }
+
+            }
+
+            requestAnimationFrame(update);
+
+            counterObserver.unobserve(el);
+
+        });
+    },
+    {
+        threshold: 0.5
+    }
+);
+
+$$("[data-count]").forEach(el => counterObserver.observe(el));
+
+/* ---------------- Lightbox ---------------- */
+
+const lightbox = $("#lightbox");
+const lbImg = $("#lbImg");
+
+function openLightbox(src) {
+    if (!lightbox || !lbImg) return;
+
+    lbImg.src = src;
+    lightbox.classList.add("open");
+}
+
+function closeLightbox() {
+    lightbox?.classList.remove("open");
+}
+
+$$("[data-src]").forEach(item => {
+    item.addEventListener("click", () => {
+        openLightbox(item.dataset.src);
+    });
+});
+
+$("#lbClose")?.addEventListener("click", closeLightbox);
+
+lightbox?.addEventListener("click", e => {
+    if (e.target === lightbox) closeLightbox();
+});
+
+document.addEventListener("keydown", e => {
+    if (e.key === "Escape") closeLightbox();
+});
+
+/* ---------------- Hero Parallax ---------------- */
+
+const heroVisual = $(".hero-visual");
+
+if (heroVisual) {
+
+    window.addEventListener("mousemove", e => {
+
+        const x = (e.clientX / innerWidth - 0.5) * 14;
+        const y = (e.clientY / innerHeight - 0.5) * 14;
+
+        heroVisual.style.transform =
+            `translate3d(${x}px,${y}px,0)`;
+
+    });
+
+}
+
+ /* ==========================================================
+   Apple Video Scroll Engine
+========================================================== */
+
+if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    ScrollTrigger.config({
+        ignoreMobileResize: true,
+        autoRefreshEvents: "DOMContentLoaded,load"
+    });
+
+    ScrollTrigger.getAll().forEach(st => {
+        if (st.vars.trigger?.classList?.contains("intro-animation")) {
+            st.kill();
+        }
+    });
+
+    const intro = $(".intro-animation");
+    const video = $("#introVideo");
+
+    if (intro && video) {
+
+        video.pause();
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = "auto";
+
+        video.setAttribute("playsinline", "");
+        video.setAttribute("webkit-playsinline", "");
+
+        let target = 0;
+        let current = 0;
+        let raf = null;
+
+        function animate() {
+
+            current += (target - current) * 0.14;
+
+            if (Math.abs(current - target) < 0.0001) {
+                current = target;
+            }
+
+            if (video.duration) {
+
+                const time = current * video.duration;
+
+                if (Math.abs(video.currentTime - time) > 0.01) {
+                    video.currentTime = time;
+                }
+
+            }
+
+            raf = requestAnimationFrame(animate);
+
+        }
+
+        function initVideo() {
+
+            video.currentTime = 0;
+
+            if (!raf) {
+
+                raf = requestAnimationFrame(animate);
+
+            }
+
+            ScrollTrigger.create({
+
+                trigger: intro,
+
+                start: "top top",
+
+                end: () => "+=" + window.innerHeight * 2,
+
+                pin: true,
+
+                pinSpacing: false,
+
+                scrub: 0.15,
+
+                anticipatePin: 1,
+
+                invalidateOnRefresh: true,
+
+                fastScrollEnd: true,
+
+                onUpdate(self) {
+
+                    target = self.progress;
+
+                },
+
+                onLeave() {
+
+                    target = 1;
+
+                },
+
+                onLeaveBack() {
+
+                    target = 0;
+
+                }
+
+            });
+
+            ScrollTrigger.refresh();
+
+        }
+
+        if (video.readyState >= 2) {
+
+            initVideo();
+
+        } else {
+
+            video.addEventListener(
+                "loadedmetadata",
+                initVideo,
+                { once: true }
+            );
+
+        }
+
+    }
+
+}
+
+/* ==========================================================
+   Button Ripple
+========================================================== */
+
+$$(".btn").forEach(btn => {
+
+    btn.style.position = "relative";
+    btn.style.overflow = "hidden";
+
+    btn.addEventListener("pointerdown", e => {
+
+        const rect = btn.getBoundingClientRect();
+
+        const ripple = document.createElement("span");
+
+        ripple.className = "btn-ripple";
+
+        ripple.style.left = (e.clientX - rect.left) + "px";
+        ripple.style.top = (e.clientY - rect.top) + "px";
+
+        btn.appendChild(ripple);
+
+        ripple.addEventListener("animationend", () => {
+
+            ripple.remove();
+
+        });
+
+    });
+
+});
+
+const rippleStyle = document.createElement("style");
+
+rippleStyle.textContent = `
+.btn-ripple{
+
+position:absolute;
+width:12px;
+height:12px;
+left:0;
+top:0;
+border-radius:50%;
+background:rgba(255,255,255,.45);
+pointer-events:none;
+transform:translate(-50%,-50%) scale(0);
+animation:ripple .65s ease-out forwards;
+
+}
+
+@keyframes ripple{
+
+0%{
+transform:translate(-50%,-50%) scale(0);
+opacity:.8;
+}
+
+100%{
+transform:translate(-50%,-50%) scale(40);
+opacity:0;
+}
+
+}
+`;
+
+document.head.appendChild(rippleStyle);
+
+/* ==========================================================
+   Refresh
+========================================================== */
+
+window.addEventListener("resize", () => {
+
+    ScrollTrigger.refresh();
+
+});
+
+window.addEventListener("orientationchange", () => {
+
+    setTimeout(() => {
+
+        ScrollTrigger.refresh();
+
+    }, 250);
+
+});
+
+ /* ==========================================================
+   Performance Optimizations
+========================================================== */
+
+const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+).matches;
+
+if (prefersReducedMotion) {
+
+    document.documentElement.classList.add("reduce-motion");
+
+}
+
+/* ---------- Passive Listeners ---------- */
+
+["touchstart","touchmove","wheel"].forEach(type => {
+
+    window.addEventListener(type, () => {}, {
+        passive: true
+    });
+
+});
+
+/* ---------- Smooth Scroll ---------- */
+
+document.documentElement.style.scrollBehavior = "smooth";
+
+/* ---------- Lazy Images ---------- */
+
+$$("img").forEach(img => {
+
+    if (!img.hasAttribute("loading")) {
+
+        img.loading = "lazy";
+
+    }
+
+    if (!img.hasAttribute("decoding")) {
+
+        img.decoding = "async";
+
+    }
+
+});
+
+/* ---------- GPU Acceleration ---------- */
+
+$$(".hero,.hero-visual,.intro-animation,video,.mem-card,.g-card")
+.forEach(el => {
+
+    el.style.willChange = "transform";
+
+});
+
+/* ---------- Page Visibility ---------- */
+
+document.addEventListener("visibilitychange", () => {
+
+    if (document.hidden) {
+
+        gsap.globalTimeline.pause();
+
+    } else {
+
+        gsap.globalTimeline.resume();
+
+    }
+
+});
+
+/* ---------- Refresh ---------- */
+
+window.addEventListener("load", () => {
+
+    if (window.ScrollTrigger) {
+
+        ScrollTrigger.refresh(true);
+
+    }
+
+});
+
+window.addEventListener("resize", () => {
+
+    if (window.ScrollTrigger) {
+
+        ScrollTrigger.refresh(true);
+
+    }
+
+});
+
+/* ---------- Cleanup ---------- */
+
+window.addEventListener("beforeunload", () => {
+
+    if (window.ScrollTrigger) {
+
+        ScrollTrigger.getAll().forEach(st => st.kill());
+
+    }
+
+});
+
+/* ==========================================================
+   Finished
+========================================================== */
+
+})();
