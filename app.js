@@ -40,23 +40,7 @@
 
     });
 
-    /* ---------------- Intro ---------------- */
 
-    function closeIntro() {
-
-        const intro = document.getElementById("intro");
-
-        if (!intro) return;
-
-        intro.style.opacity = "0";
-
-        setTimeout(() => {
-
-            intro.remove();
-
-        }, 800);
-
-    }
 
     setTimeout(closeIntro, 4500);
 
@@ -454,141 +438,75 @@
         });
 
     }
-
 /* ---------------- Apple Video Scroll Engine ---------------- */
 
 gsap.registerPlugin(ScrollTrigger);
 
+ScrollTrigger.config({
+    ignoreMobileResize: true,
+    autoRefreshEvents: "DOMContentLoaded,load"
+});
+
 const intro = document.querySelector(".intro-animation");
+const video = document.getElementById("introVideo");
+
 if (intro && video) {
 
     video.pause();
-    video.autoplay = false;
-    video.loop = false;
-    video.controls = false;
     video.muted = true;
     video.playsInline = true;
     video.preload = "auto";
-    video.setAttribute("playsinline", "");
-    video.setAttribute("webkit-playsinline", "");
-    
 
     let target = 0;
     let current = 0;
-    let raf = null;
 
     function render() {
-
-        current += (target - current) * 0.12;
-
-        if (Math.abs(current - target) < 0.001) {
-            current = target;
-        }
+        current += (target - current) * 0.15;
 
         if (video.duration) {
-
             const t = current * video.duration;
 
             if (Math.abs(video.currentTime - t) > 0.01) {
                 video.currentTime = t;
             }
-
         }
 
-        raf = requestAnimationFrame(render);
-        
-
+        requestAnimationFrame(render);
     }
 
     function init() {
 
         video.currentTime = 0;
 
-        if (!raf) render();
+        requestAnimationFrame(render);
 
         ScrollTrigger.create({
-
             trigger: intro,
-
             start: "top top",
-
             end: () => "+=" + window.innerHeight * 2,
-
             pin: true,
-
             pinSpacing: false,
-
-            scrub: 0.08,
-
+            scrub: 0.15,
+            anticipatePin: 1,
             invalidateOnRefresh: true,
 
-            anticipatePin: 1,
-
-            fastScrollEnd: true,
-
             onUpdate(self) {
-
                 target = self.progress;
-
             }
-
         });
 
         ScrollTrigger.refresh();
-
     }
 
     if (video.readyState >= 2) {
-
         init();
-
     } else {
-
         video.addEventListener("loadedmetadata", init, {
             once: true
         });
-
     }
-
 }
 
-
-
-function render() {
-
-    current += (target - current) * 0.28;
-
-    if (Math.abs(current - target) < 0.0005) {
-
-        current = target;
-
-    }
-
-    if (video.duration) {
-
-        const time = current * video.duration;
-
-        if (Math.abs(video.currentTime - time) > 0.02) {
-
-            video.currentTime = time;
-
-        }
-
-    }
-
-    raf = requestAnimationFrame(render);
-
-}
-    
-ScrollTrigger.config({
-
-    ignoreMobileResize: true,
-
-    autoRefreshEvents: "DOMContentLoaded,load"
-
-});
-
-const intro = document.querySelector(".intro-animation");
 /* ---------------- Button Ripple ---------------- */
 
 $$(".btn").forEach(btn => {
@@ -618,9 +536,7 @@ $$(".btn").forEach(btn => {
 
         btn.appendChild(ripple);
 
-        ripple.addEventListener("animationend", () => {
-            ripple.remove();
-        });
+        ripple.addEventListener("animationend", () => ripple.remove());
 
     });
 
@@ -630,29 +546,20 @@ const rippleStyle = document.createElement("style");
 
 rippleStyle.textContent = `
 @keyframes ripple{
-    0%{
-        transform:translate(-50%,-50%) scale(0);
-        opacity:.8;
-    }
-    100%{
-        transform:translate(-50%,-50%) scale(40);
-        opacity:0;
-    }
+0%{
+transform:translate(-50%,-50%) scale(0);
+opacity:.8;
+}
+100%{
+transform:translate(-50%,-50%) scale(40);
+opacity:0;
+}
 }
 `;
 
 document.head.appendChild(rippleStyle);
 
-/* ---------------- Refresh ScrollTrigger ---------------- */
+window.addEventListener("resize", () => ScrollTrigger.refresh());
+window.addEventListener("load", () => ScrollTrigger.refresh());
 
-window.addEventListener("resize", () => {
-
-    ScrollTrigger.refresh();
-
-});
-
-window.addEventListener("load", () => {
-
-    ScrollTrigger.refresh();
-    });
-};
+})();
