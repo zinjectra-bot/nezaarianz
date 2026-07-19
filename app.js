@@ -554,47 +554,7 @@ if (intro && video) {
 
 }
 
-    ScrollTrigger.create({
 
-    trigger: intro,
-
-    start: "top top",
-
-    end: () => "+=" + (window.innerHeight * 1.38),
-
-    pin: true,
-
-    pinSpacing: true,
-
-    scrub: 0.15,
-
-    anticipatePin: 1,
-
-    invalidateOnRefresh: true,
-
-    fastScrollEnd: true,
-
-    preventOverlaps: true,
-
-    onUpdate(self) {
-
-        target = self.progress;
-
-    },
-
-    onLeave() {
-
-        target = 1;
-
-    },
-
-    onLeaveBack() {
-
-        target = 0;
-
-    }
-
-});
 
 function render() {
 
@@ -700,18 +660,6 @@ rippleStyle.textContent = `
 
 document.head.appendChild(rippleStyle);
 
-/* ---------------- Refresh ScrollTrigger ---------------- */
-
-window.addEventListener("resize", () => {
-    if (window.ScrollTrigger) ScrollTrigger.refresh();
-});
-
-window.addEventListener("load", () => {
-    if (window.ScrollTrigger) ScrollTrigger.refresh();
-});
-
-})();
-    
 /* ---------------- Refresh ScrollTrigger ---------------- */
 
 window.addEventListener("resize", () => {
