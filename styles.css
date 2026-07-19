@@ -328,7 +328,6 @@ body.light .eyebrow{color:#4a2ecc}
         height: 80px;
         right: -10px;
         bottom: -30px;
-        opacity: 50%;
     }
 }
 .badge{display:inline-flex;align-items:center;gap:8px;color:var(--ink)}
@@ -397,262 +396,49 @@ body.light .shine{background:linear-gradient(90deg,var(--ink),var(--violet-1),va
   animation:floatCard 6s ease-in-out infinite;
 }
 @keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-/* ==========================================
-   Browser Mock
-========================================== */
-
-.browser-mock{
-    backdrop-filter:blur(24px);
-    -webkit-backdrop-filter:blur(24px);
-}
-.browser-mock::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    z-index:10;
-    pointer-events:none;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.18),
-            rgba(255,255,255,0) 35%
-        );
-}
-
-/* ==========================================
-   Top Bar
-========================================== */
-
 .browser-bar{
-    display:flex;
-    align-items:center;
-    gap:8px;
-
-    padding:14px 16px;
-
-    position:relative;
-    z-index:20;
-
-    background:rgba(255,255,255,.05);
-
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
-
-    border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex;align-items:center;gap:8px;padding:12px 14px;
+  border-bottom:1px solid var(--glass-brd);
+  background:rgba(255,255,255,.03);
 }
-
-.browser-bar span{
-    width:10px;
-    height:10px;
-    border-radius:50%;
-}
-
-.browser-bar span:nth-child(1){
-    background:#ff5f57;
-}
-
-.browser-bar span:nth-child(2){
-    background:#febc2e;
-}
-
-.browser-bar span:nth-child(3){
-    background:#28c840;
-}
-
+.browser-bar span{width:10px;height:10px;border-radius:50%}
+.browser-bar span:nth-child(1){background:#ff5f57}
+.browser-bar span:nth-child(2){background:#febc2e}
+.browser-bar span:nth-child(3){background:#28c840}
 .browser-url{
-    flex:1;
-    margin-left:10px;
-
-    padding:7px 14px;
-
-    border-radius:999px;
-
-    background:rgba(255,255,255,.06);
-
-    border:1px solid rgba(255,255,255,.08);
-
-    color:rgba(255,255,255,.75);
-
-    font-size:12px;
-
-    text-align:center;
-
-    backdrop-filter:blur(20px);
+  margin-left:12px;flex:1;padding:6px 14px;border-radius:999px;
+  background:rgba(255,255,255,.05);font-size:12px;color:var(--muted);
+  border:1px solid var(--glass-brd);
 }
-
-/* ==========================================
-   Browser Body
-========================================== */
-
-.browser-body{
-    position:relative;
-    aspect-ratio:5/3;
-    overflow:hidden;
-
-    background:transparent;
-}
-
-/* Background Image */
-.hero-img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    opacity:1;
-    filter:none;
-    transform:none;
-    transition:transform .8s var(--ease);
-}
-
-.browser-mock:hover .hero-img{
-    transform:scale(1.05);
-}
-/* Glass Layer */
-
-.browser-body::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    z-index:2;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,.16),
-            rgba(255,255,255,.02)
-        );
-
-    backdrop-filter:
-        blur(22px)
-        saturate(180%);
-
-    -webkit-backdrop-filter:
-        blur(22px)
-        saturate(180%);
-
-    box-shadow:
-        inset 0 1px rgba(255,255,255,.25),
-        inset 0 -1px rgba(255,255,255,.04);
-
-    pointer-events:none;
-}
-
-/* Glow */
-
+.browser-body{position:relative;aspect-ratio:5/3;overflow:hidden}
+.hero-img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.browser-mock:hover .hero-img{transform:scale(1.05)}
 .hero-glow{
-    position:absolute;
-    inset:-40%;
-    z-index:0;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(124,92,255,.55),
-            transparent 60%
-        );
-
-    filter:blur(80px);
+  position:absolute;inset:-40%;z-index:-1;
+  background:radial-gradient(circle at 50% 50%, rgba(124,92,255,.5), transparent 60%);
+  filter:blur(60px);
 }
-
-/* Fallback */
-
 .img-fallback{
-    position:absolute;
-    inset:0;
-
-    display:grid;
-    place-items:center;
-
-    font-family:'Space Grotesk';
-    font-weight:800;
-
-    font-size:clamp(36px,6vw,72px);
-
-    background:linear-gradient(
-        120deg,
-        var(--blue-1),
-        var(--violet-2)
-    );
-
-    color:transparent;
-
-    -webkit-background-clip:text;
-    background-clip:text;
-
-    z-index:5;
+  position:absolute;inset:0;display:grid;place-items:center;
+  font-family:'Space Grotesk';font-weight:800;font-size:clamp(36px,6vw,72px);letter-spacing:.05em;
+  background:linear-gradient(135deg,#1a1f4a,#3d2d78);
+  color:transparent;-webkit-background-clip:text;background-clip:text;
+  background-image:linear-gradient(120deg,var(--blue-1),var(--violet-2));
+  -webkit-background-clip:text;
 }
-
-/* Floating Badges */
-
 .floating-badge{
-    position:absolute;
-
-    z-index:15;
-
-    font-size:12px;
-    font-weight:600;
-
-    color:#fff;
-
-    animation:bob 4s ease-in-out infinite;
+  position:absolute;font-weight:600;font-size:12px;color:var(--ink);
+  animation:bob 4s ease-in-out infinite;
 }
-
-.floating-badge.b1{
-    top:16px;
-    left:16px;
-}
-
-.floating-badge.b2{
-    bottom:16px;
-    right:16px;
-    animation-delay:1.4s;
-}
-
-/* Floating Logo */
-
+.floating-badge.b1{top:14px;left:14px}
+.floating-badge.b2{bottom:14px;right:14px;animation-delay:1.2s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .batch-logo-float{
-    position:absolute;
-
-    bottom:-40px;
-    right:-30px;
-
-    width:120px;
-    height:120px;
-
-    object-fit:contain;
-
-    filter:drop-shadow(0 20px 40px rgba(124,92,255,.55));
-
-    animation:
-        spinSlow 20s linear infinite,
-        bob 5s ease-in-out infinite;
+  position:absolute;bottom:-40px;right:-30px;width:120px;height:120px;object-fit:contain;
+  filter:drop-shadow(0 20px 40px rgba(124,92,255,.55));
+  animation:spinSlow 20s linear infinite, bob 5s ease-in-out infinite;
 }
-
-/* Animations */
-
-@keyframes floatCard{
-    0%,100%{
-        transform:translateY(0);
-    }
-    50%{
-        transform:translateY(-14px);
-    }
-}
-
-@keyframes bob{
-    0%,100%{
-        transform:translateY(0);
-    }
-    50%{
-        transform:translateY(-8px);
-    }
-}
-
-@keyframes spinSlow{
-    to{
-        transform:rotate(360deg);
-    }
-}
+@keyframes spinSlow{to{transform:rotate(360deg)}}
 
 .scroll-hint{
   position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
