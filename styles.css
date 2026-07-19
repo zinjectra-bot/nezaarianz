@@ -511,7 +511,7 @@ body.light .shine{background:linear-gradient(90deg,var(--ink),var(--violet-1),va
     aspect-ratio:5/3;
     overflow:hidden;
 
-    background:#0b1020;
+    background:transparent;
 }
 
 /* Background Image */
