@@ -494,7 +494,7 @@ if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
 
         function animate() {
 
-            current += (target - current) * 0.14;
+            current += (target - current) * 0.13;
 
             if (Math.abs(current - target) < 0.0001) {
                 current = target;
